@@ -41,7 +41,7 @@ export class DataService {
         data.forEach((project: any, iter: number) => {
           this.projects.push({
             name: project.name,
-            link: project.link,
+            link: project.link
             title: project.title,
             id: project.id,
             content: project.content,

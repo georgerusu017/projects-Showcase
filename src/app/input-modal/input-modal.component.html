@@ -1,0 +1,103 @@
+<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+        </ion-buttons>
+        <ion-title class="ion-text-center">Add project</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="onSubmit()" [strong]="true">Confirm</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <form [formGroup]="inputForm" (ngSubmit)="onSubmit()">
+        <ion-item>
+          <ion-input
+            type="text"
+            formControlName="name"
+            placeholder="John"
+          ></ion-input>
+        </ion-item>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.name">
+            <div
+              class="error-message"
+              *ngIf="
+                inputForm.get('name').hasError(validation.type) &&
+                (inputForm.get('name').dirty || inputForm.get('name').touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-input
+            type="url"
+            formControlName="link"
+            placeholder="project link"
+          ></ion-input>
+        </ion-item>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.link">
+            <div
+              class="error-message"
+              *ngIf="
+                inputForm.get('link').hasError(validation.type) &&
+                (inputForm.get('link').dirty || inputForm.get('link').touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-input
+            type="url"
+            formControlName="image"
+            placeholder="image link"
+          ></ion-input>
+        </ion-item>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.image">
+            <div
+              class="error-message"
+              *ngIf="
+                inputForm.get('image').hasError(validation.type) &&
+                (inputForm.get('image').dirty || inputForm.get('image').touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+
+        <ion-item>
+          <ion-input
+            type="text"
+            formControlName="content"
+            placeholder="content"
+          ></ion-input>
+        </ion-item>
+        <div class="validation-errors">
+          <ng-container *ngFor="let validation of validation_messages.content">
+            <div
+              class="error-message"
+              *ngIf="
+                inputForm.get('content').hasError(validation.type) &&
+                (inputForm.get('content').dirty ||
+                  inputForm.get('content').touched)
+              "
+            >
+              {{ validation.message }}
+            </div>
+          </ng-container>
+        </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
