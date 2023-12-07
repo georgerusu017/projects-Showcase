@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RefresherCustomEvent } from '@ionic/angular';
-import { MessageComponent } from '../message/message.component';
 
-import { DataService, Message } from '../services/data.service';
+import { DataService, Project } from '../services/data.service';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +9,9 @@ import { DataService, Message } from '../services/data.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  private data = inject(DataService);
+  private dataService = inject(DataService);
+  isLoading: boolean = true;
+
   constructor() {}
 
   refresh(ev: any) {
@@ -19,7 +20,11 @@ export class HomePage {
     }, 3000);
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
+  getProjects(): Project[] {
+    return this.dataService.getProjects();
+  }
+
+  addProject(data: {}) {
+    this.dataService.addData(data);
   }
 }

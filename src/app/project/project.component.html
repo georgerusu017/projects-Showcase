@@ -1,0 +1,18 @@
+<ion-item *ngIf="project" (click)="onClickItem($event)" [detail]="false">
+  <ion-card class="custom-ion-card">
+    <section class="card-thumbnail">
+      <img alt="Project Image" [src]="project.image" />
+    </section>
+    <section class="card-content">
+      <ion-label class="ion-padding-start custom-ion-label">
+        <h2>{{ project.title }}</h2>
+        <h3>{{ project.name }}</h3>
+        <p>{{ project.content }}</p>
+      </ion-label>
+      <section class="control-buttons">
+        <ion-button (click)="updateData(project.id, $event)">Edit</ion-button>
+        <ion-button (click)="deleteData(project.id, $event)">Delete</ion-button>
+      </section>
+    </section>
+  </ion-card>
+</ion-item>

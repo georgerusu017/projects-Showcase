@@ -1,83 +1,95 @@
 import { Injectable } from '@angular/core';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  collectionData,
+  doc,
+  updateDoc,
+  deleteDoc,
+} from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+import { personAddSharp } from 'ionicons/icons';
+import { log } from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 
-export interface Message {
-  fromName: string;
-  subject: string;
-  date: string;
-  id: number;
-  read: boolean;
+export interface Project {
+  name: string;
+  content: string;
+  id: string;
+  title: string;
+  link: string;
+  listingNumber: number;
+  image: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DataService {
-  public messages: Message[] = [
-    {
-      fromName: 'Matt Chorsey',
-      subject: 'New event: Trip to Vegas',
-      date: '9:32 AM',
-      id: 0,
-      read: false
-    },
-    {
-      fromName: 'Lauren Ruthford',
-      subject: 'Long time no chat',
-      date: '6:12 AM',
-      id: 1,
-      read: false
-    },
-    {
-      fromName: 'Jordan Firth',
-      subject: 'Report Results',
-      date: '4:55 AM',
-      id: 2,
-      read: false
-    },
-    {
-      fromName: 'Bill Thomas',
-      subject: 'The situation',
-      date: 'Yesterday',
-      id: 3,
-      read: false
-    },
-    {
-      fromName: 'Joanne Pollan',
-      subject: 'Updated invitation: Swim lessons',
-      date: 'Yesterday',
-      id: 4,
-      read: false
-    },
-    {
-      fromName: 'Andrea Cornerston',
-      subject: 'Last minute ask',
-      date: 'Yesterday',
-      id: 5,
-      read: false
-    },
-    {
-      fromName: 'Moe Chamont',
-      subject: 'Family Calendar - Version 1',
-      date: 'Last Week',
-      id: 6,
-      read: false
-    },
-    {
-      fromName: 'Kelly Richardson',
-      subject: 'Placeholder Headhots',
-      date: 'Last Week',
-      id: 7,
-      read: false
-    }
-  ];
+  public projectsData!: Observable<any>;
 
-  constructor() { }
-
-  public getMessages(): Message[] {
-    return this.messages;
+  public projects: Project[] = [];
+  constructor(private firestore: Firestore) {
+    this.getData();
   }
 
-  public getMessageById(id: number): Message {
-    return this.messages[id];
+  getData() {
+    const projectsInstance = collection(this.firestore, 'projects');
+    collectionData(projectsInstance, { idField: 'id' }).subscribe(
+      (data: any) => {
+        this.projects = [];
+        data.forEach((project: any, iter: number) => {
+          this.projects.push({
+            name: project.name,
+            link: project.link,
+            title: project.title,
+            id: project.id,
+            content: project.content,
+            listingNumber: iter,
+            image: project.image,
+          });
+        });
+      },
+    );
+    this.projectsData = collectionData(projectsInstance, { idField: 'id' });
+  }
+
+  addData(data: any) {
+    const projectInstance = collection(this.firestore, 'projects');
+    addDoc(projectInstance, data.values)
+      .then(() => {
+        console.log('Data transmitted successfully');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  updateData(id: string) {
+    const docInstance = doc(this.firestore, 'projects', id);
+    const updateData = {
+      name: 'Edit works',
+    };
+    updateDoc(docInstance, updateData)
+      .then(() => {
+        console.log('Data updated');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  deleteData(id: string) {
+    const docInstance = doc(this.firestore, 'projects', id);
+    deleteDoc(docInstance).then(() => {
+      console.log('Data deleted', docInstance);
+    });
+  }
+  public getProjects(): Project[] {
+    return this.projects;
+  }
+
+  public getProjectById(id: number): Project {
+    return this.projects[id];
   }
 }
