@@ -78,6 +78,7 @@ export class DataService {
         console.log(err);
       });
   }
+  // +1
 
   deleteData(id: string) {
     const docInstance = doc(this.firestore, 'projects', id);
